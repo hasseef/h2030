@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>سوق المرافق — حصيف</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css?v=3011"></head><body>
+<header class="header"><div class="container wrap">
+  <div class="brand"><img src="../assets/img/hasseef.png"><div><div style="font-weight:900">منصة حصيف</div><div class="subline">سوق المرافق</div></div></div>
+  <a class="btn" href="../index.html">الرئيسية</a>
+</div></header>
+<main class="container" style="padding:18px 0">
+<section class="card"><div class="section-title">ابحث عن مرفق</div>
+<div class="toolbar"><input type="search" id="fq" placeholder="قاعة… ملعب… مركز…" style="max-width:320px">
+<select id="fregion"><option value="">المنطقة</option><option>الرياض</option><option>جدة</option><option>حائل</option></select>
+<select id="fcap"><option value="">السعة</option><option>&lt;200</option><option>200-500</option><option>&gt;500</option></select>
+<button class="btn" onclick="filterFacilities()">تصفية</button>
+<button class="btn" onclick="exportFacilities()">تصدير CSV</button></div>
+<div id="facCards" class="grid4"></div>
+</section>
+</main><footer class="footer">© Hasseef</footer>
+<script>
+const facilities=[
+ {name:'قاعة مناسبات — الرياض',cap:450,region:'الرياض',tags:['صور','خريطة','حجز']},
+ {name:'مسرح جامعة — جدة',cap:800,region:'جدة',tags:['صور','خريطة','حجز']},
+ {name:'قاعة تدريب — حائل',cap:120,region:'حائل',tags:['صور','خريطة','حجز']},
+ {name:'مركز مؤتمرات — الدمام',cap:1200,region:'الشرقية',tags:['صور','خريطة','حجز']},
+];
+function render(list){
+  document.getElementById('facCards').innerHTML=list.map(f=>`<div class="card"><b>${f.name}</b><div class="feat">سعة ${f.cap} — ${f.region}</div>${f.tags.map(t=>'<div class=tag>'+t+'</div>').join(' ')}</div>`).join('');
+}
+function filterFacilities(){
+  const q=document.getElementById('fq').value.trim(), r=document.getElementById('fregion').value, c=document.getElementById('fcap').value;
+  render(facilities.filter(f=> (q?f.name.includes(q):1) && (r?f.region===r:1) && (c?(c=='<200'?f.cap<200:c=='200-500'?f.cap>=200&&f.cap<=500:f.cap>500):1) ));
+}
+function exportFacilities(){
+  const rows=[['المرفق','السعة','المنطقة'],...facilities.map(f=>[f.name,f.cap,f.region])];
+  HS.csv('facilities.csv',rows);
+}
+render(facilities);
+</script>
+</body></html>

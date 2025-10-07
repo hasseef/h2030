@@ -1,1 +1,85 @@
-<!doctype html><title>Hasseef</title>
+<!DOCTYPE html><html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>منصة حصيف — البوابة الوطنية للتكامل التنموي (v30.1)</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./assets/css/style.css?v=3011">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script defer src="./assets/js/app.js?v=3011"></script>
+<script defer src="./assets/js/charts.js?v=3011"></script>
+<script defer src="./assets/js/maps.js?v=3011"></script>
+</head><body>
+<header class="header">
+  <div class="container wrap">
+    <div class="brand"><img src="./assets/img/hasseef.png" width="70" height="70"><div>
+      <div style="font-weight:900">منصة حصيف</div>
+      <div class="subline">البوابة الوطنية للتكامل التنموي</div></div></div>
+    <div class="meta-logos">
+      <img src="./assets/img/vision.png" alt="رؤية 2030">
+      <img src="./assets/img/talbiya_initiative.png" alt="مبادرة/شركة تلبية">
+    </div>
+  </div>
+  <div class="container"><nav class="nav">
+    <a class="btn" href="./index.html">الرئيسية</a>
+    <a class="btn" href="./modules/solutions.html">الحلول</a>
+    <a class="btn" href="./modules/investments.html">الاستثمار</a>
+    <a class="btn" href="./modules/subscriptions.html">الاشتراكات</a>
+    <a class="btn" href="./modules/facility-market.html">سوق المرافق</a>
+    <a class="btn" href="./modules/reports.html">التقارير</a>
+    <a class="btn" href="./partners/index.html">الشركاء الاستراتيجيون</a>
+    <a class="btn" href="./modules/support.html">الدعم الفني</a>
+    <span style="margin-inline-start:auto"></span><a class="btn btn-primary" href="./login.html">ابدأ الآن</a>
+  </nav></div>
+</header>
+
+<main class="container" style="padding:14px 0">
+<section class="hero">
+  <div class="cover">
+    <div class="card">
+      <div class="section-title">واجهة وطنية — ربط التحديات بالحلول وتمويل التنفيذ</div>
+      <p>قصص أثر، تمويل، تنفيذ، و<span class="badge">مواءمة 2030</span> <b>(6/27/96)</b>.</p>
+      <div class="kpis">
+        <div class="kpi"><h3>مشاريع</h3><div id="k1" class="v">—</div></div>
+        <div class="kpi"><h3>تمويل (مليون)</h3><div id="k2" class="v">—</div></div>
+        <div class="kpi"><h3>فعاليات</h3><div id="k3" class="v">—</div></div>
+        <div class="kpi"><h3>شركاء</h3><div id="k4" class="v">—</div></div>
+      </div>
+      <canvas id="kpiChart" style="margin-top:14px; height:220px"></canvas>
+      <div class="toolbar"><a class="btn" href="./modules/reports.html">طباعة تقرير PDF</a></div>
+    </div>
+    <div class="hero-visual"><div class="img"></div><div class="illus">التكامل • الشراكات • الأثر</div></div>
+  </div><div class="ribbon"></div>
+</section>
+
+<section class="card" style="margin-top:18px">
+  <div class="section-title">قصص أثر</div>
+  <div id="stories" class="grid4"></div>
+</section>
+
+<section class="card" style="margin-top:18px">
+  <div class="section-title">الشركاء الاستراتيجيون</div>
+  <div id="partners" class="logo-rail"></div>
+</section>
+
+<section class="card" style="margin-top:18px">
+  <div class="section-title">أنشطة المنصة حسب المناطق</div>
+  <div id="map" class="map"></div>
+</section>
+</main>
+
+<footer class="footer">© Hasseef — جميع الحقوق محفوظة</footer>
+
+<script>
+(async function(){
+  const r = await fetch('./assets/data/home.json?v=3011'); const d = await r.json();
+  ['k1','k2','k3','k4'].forEach((id,i)=>HS.countUp(document.getElementById(id), [d.kpis.projects, d.kpis.funding, d.kpis.events, d.kpis.partners][i]));
+  document.getElementById('partners').innerHTML = d.partners.map(p=>`<img src="./assets/partners/${p}.svg" alt="${p}">`).join('');
+  drawLine('kpiChart', d.kpi.labels, d.kpi.datasets);
+  initMap('map', d.markers);
+  document.getElementById('stories').innerHTML = d.stories.map((s,i)=>`
+    <div class="card"><b>${s.title}</b><div class="feat">${s.desc}</div><div class="badge">${s.tag}</div></div>
+  `).join('');
+})();
+</script>
+</body></html>

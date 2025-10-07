@@ -1,0 +1,69 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ملف الشركاء الاستراتيجيين — حصيف</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css?v=3011">
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head><body>
+<header class="header"><div class="container wrap">
+  <div class="brand"><img src="../assets/img/hasseef.png"><div><div style="font-weight:900">منصة حصيف</div><div class="subline">ملفات الشركاء الاستراتيجيين</div></div></div>
+  <a class="btn" href="../index.html">الرئيسية</a>
+</div></header>
+
+<main class="container" style="padding:18px 0">
+<section class="card" id="listSec"><div class="section-title">اختر الشريك</div>
+<div id="plist" class="grid4"></div></section>
+
+<section class="card" id="detailSec" style="display:none">
+  <div class="section-title" id="pTitle">شريك</div>
+  <div class="grid2">
+    <div class="card"><b>الدور</b><p class="feat" id="pRole"></p></div>
+    <div class="card"><b>الخدمات عبر حصيف</b><ul id="pServices"></ul></div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <div class="section-title">مؤشرات أداء</div>
+    <div class="kpis">
+      <div class="kpi"><h3>مشاريع مدعومة</h3><div class="v" id="k1">—</div></div>
+      <div class="kpi"><h3>تمويل (مليون)</h3><div class="v" id="k2">—</div></div>
+      <div class="kpi"><h3>شراكات نشطة</h3><div class="v" id="k3">—</div></div>
+      <div class="kpi"><h3>فعالية/تدريب</h3><div class="v" id="k4">—</div></div>
+    </div>
+    <canvas id="c1" style="margin-top:14px;height:220px"></canvas>
+  </div>
+</section>
+</main>
+<footer class="footer">© Hasseef</footer>
+
+<script>
+const partners = [
+  {id:'sdb', name:'بنك التنمية الاجتماعية', role:'تمويل المشاريع المجتمعية والريادية', services:['بوابة طلبات التمويل','مطابقة معايير المنح','متابعة الأثر والتقارير'], k:[52,'18.2',64,22]},
+  {id:'monshaat', name:'منشآت', role:'تمكين ريادة الأعمال والمنشآت', services:['حاضنات/مسرعات','سوق المرافق','ربط بالجامعات والمتدربين'], k:[61,'14.5',72,18]},
+  {id:'ncnp', name:'المركز الوطني لتنمية القطاع غير الربحي', role:'تمكين الجمعيات وتطوير الأثر', services:['منصة المبادرات','تطوع متخصص','حوكمة ومؤشرات'], k:[77,'9.4',81,15]},
+  {id:'hrsd', name:'وزارة الموارد البشرية والتنمية الاجتماعية', role:'تمكين رأس المال البشري وغير الربحي', services:['تطوع/توظيف','تكامل التدريب التعاوني','مؤشرات وطنية'], k:[95,'23.0',88,34]},
+  {id:'mc', name:'وزارة التجارة', role:'تحسين بيئة الأعمال', services:['تحديات وحلول','فرص استثمارية','متابعة مشاريع'], k:[40,'12.0',45,10]},
+  {id:'mep', name:'وزارة الاقتصاد والتخطيط', role:'مواءمة وطنية وتحليل أثر', services:['مواءمة 2030 (6/27/96)','لوحات مؤشرات','مستودع بيانات'], k:[66,'31.0',26,12]},
+  {id:'rdia', name:'هيئة تنمية البحث والتطوير والابتكار', role:'تحفيز حلول تقنية مبتكرة', services:['سوق الاستشارات','مختبر التحديات','ربط الجامعات والخاص'], k:[28,'7.5',33,11]},
+  {id:'ndf', name:'صندوق التنمية الوطني', role:'تجميع أدوات التمويل التنموي', services:['معايير تمويل','مطابقة ذكية','تقارير حول الأثر'], k:[120,'54.0',39,9]},
+  {id:'asda', name:'أصداء', role:'الشراكات الإعلامية', services:['رعاية فعاليات','سوق المتحدثين','قياس أثر إعلامي'], k:[22,'3.1',38,17]},
+  {id:'adaa', name:'هيئة كفاءة الأداء', role:'رفع كفاءة الأداء الحكومي', services:['نماذج أداء','متابعة المشاريع','تقارير وتحسين'], k:[51,'4.8',44,13]},
+];
+const list = document.getElementById('plist');
+const listSec = document.getElementById('listSec');
+const detailSec = document.getElementById('detailSec');
+const pid = new URLSearchParams(location.search).get('id');
+function renderList(){ list.innerHTML = partners.map(p=>`
+  <a class="account-card" href="?id=${p.id}">
+    <img src="../assets/partners/${p.id}.svg" style="height:42px">
+    <div style="font-weight:900">${p.name}</div>
+    <div class="feat">الدور — الخدمات — المؤشرات</div>
+  </a>`).join('');}
+function renderDetail(p){
+  listSec.style.display='none'; detailSec.style.display='';
+  pTitle.textContent = p.name; pRole.textContent=p.role;
+  pServices.innerHTML = p.services.map(s=>`<li>${s}</li>`).join('');
+  ['k1','k2','k3','k4'].forEach((id,i)=>document.getElementById(id).textContent = p.k[i]);
+  new Chart(c1.getContext('2d'),{type:'line',data:{labels:['ينا','فبر','مار','أبر','ماي','يون'],datasets:[{label:'مشاريع',data:[4,7,8,12,10,14],borderColor:'#0e8a3d',borderWidth:3,tension:.35}]}});
+}
+renderList(); if(pid){const p=partners.find(x=>x.id===pid); if(p) renderDetail(p);}
+</script>
+</body></html>

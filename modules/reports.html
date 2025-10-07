@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>التقارير — حصيف</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css?v=3011">
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script defer src="../assets/js/charts.js?v=3011"></script>
+</head><body>
+<header class="header"><div class="container wrap">
+  <div class="brand"><img src="../assets/img/hasseef.png"><div><div style="font-weight:900">منصة حصيف</div><div class="subline">التقارير ولوحات الأثر</div></div></div>
+  <a class="btn" href="../index.html">الرئيسية</a>
+</div></header>
+<main class="container" style="padding:18px 0">
+<section class="card">
+  <div class="section-title">لوحة مؤشرات</div>
+  <canvas id="r1" style="height:260px"></canvas>
+  <div class="toolbar">
+    <button class="btn" onclick="window.print()">طباعة PDF</button>
+    <button class="btn" onclick="exportCsv()">تصدير CSV</button>
+  </div>
+</section>
+</main><footer class="footer">© Hasseef</footer>
+<script>
+const dataset={labels:['ينا','فبر','مار','أبر','ماي','يون'], datasets:[
+ {label:'مشاريع',data:[5,8,12,15,19,22],borderColor:'#0e8a3d',borderWidth:3,tension:.35},
+ {label:'تمويل (مليون)',data:[1.2,1.9,2.6,3.1,3.9,4.8],borderColor:'#caa446',borderWidth:3,tension:.35}
+]};
+drawLine('r1',dataset.labels,dataset.datasets);
+function exportCsv(){
+  const rows=[['الشهر','مشاريع','تمويل (مليون)'],...dataset.labels.map((m,i)=>[m,dataset.datasets[0].data[i],dataset.datasets[1].data[i]])];
+  HS.csv('report.csv',rows);
+}
+</script>
+</body></html>

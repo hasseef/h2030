@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>حساب الأفراد — حصيف</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css?v=3011"></head><body>
+<header class="header"><div class="container wrap">
+  <div class="brand"><img src="../assets/img/hasseef.png"><div><div style="font-weight:900">منصة حصيف</div><div class="subline">حساب الأفراد</div></div></div>
+  <a class="btn" href="../index.html">الرئيسية</a>
+</div></header>
+<main class="container" style="padding:18px 0">
+<section class="card">
+<div class="tabs" id="tabs"></div>
+
+<div id="tp-1" class="tabpanel active">
+  <div class="section-title">فحص الميول والرغبات</div>
+  <form class="grid2">
+    <div><label>المجال المفضل</label><select><option>تقنية</option><option>تعليم</option><option>صحة</option><option>ثقافة</option></select></div>
+    <div><label>نوع الفرص</label><select><option>تطوع</option><option>تدريب</option><option>تدريب تعاوني</option><option>استثمارية</option></select></div>
+    <div style="grid-column:1/-1"><label>مهاراتك</label><input placeholder="اكتب مهاراتك الرئيسية"></div>
+    <div><button class="btn btn-primary" type="button">احسب التوافق</button></div>
+  </form>
+</div>
+<div id="tp-2" class="tabpanel">
+  <div class="section-title">الفرص المقترحة</div>
+  <table class="table"><thead><tr><th>الفرصة</th><th>النوع</th><th>المنطقة</th><th>تقديم</th></tr></thead><tbody id="opps"></tbody></table>
+</div>
+<div id="tp-3" class="tabpanel">
+  <div class="section-title">المحفظة</div>
+  <ul class="feat"><li>رصيد النقاط: <b id="wallet">0</b></li><li>شهادات الدورات</li><li>سجل الطلبات</li></ul>
+</div>
+<div id="tp-4" class="tabpanel">
+  <div class="section-title">مبادرة فردية</div>
+  <form class="grid2">
+    <div><label>عنوان المبادرة</label><input></div>
+    <div><label>المنطقة</label><select><option>الرياض</option><option>جدة</option><option>حائل</option></select></div>
+    <div><label>مواءمة 6/27/96</label><select id="s6"></select></div>
+    <div><label>الأهداف الفرعية</label><select id="s27"></select></div>
+    <div style="grid-column:1/-1"><label>الأهداف التفصيلية</label><select id="s96" multiple size="4" style="height:auto"></select></div>
+    <div style="grid-column:1/-1"><label>مرفقات</label><input type="file" multiple></div>
+    <div><button class="btn btn-primary" type="button">إرسال</button></div>
+  </form>
+</div>
+
+</section>
+</main><footer class="footer">© Hasseef</footer>
+<script>
+
+const TABS=['ميول','فرص','محفظة','مبادرة']; const ct=document.getElementById('tabs');
+TABS.forEach((t,i)=>{const b=document.createElement('button'); b.className='tab'+(i==0?' active':''); b.textContent=t; b.onclick=()=>switchTab(i); ct.appendChild(b)});
+function switchTab(i){document.querySelectorAll('.tab').forEach((x,j)=>x.classList.toggle('active',i==j)); document.querySelectorAll('.tabpanel').forEach((x,j)=>x.classList.toggle('active',i==j));}
+document.getElementById('opps').innerHTML = [['منصة تطوع تقني','تطوع','الرياض'],['برنامج تدريب صيفي','تدريب','جدة'],['مشروع تعاوني جامعي','تدريب تعاوني','حائل']].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td><a class='btn'>تقديم</a></td></tr>`).join('');
+Promise.all([fetch('../assets/data/vision6.json'),fetch('../assets/data/vision27.json'),fetch('../assets/data/vision96.json')]).then(async([a,b,c])=>{
+  const v6=await a.json(), v27=await b.json(), v96=await c.json();
+  s6.innerHTML=v6.map(x=>`<option>${x}</option>`).join('');
+  s27.innerHTML=v27.map(x=>`<option>${x}</option>`).join('');
+  s96.innerHTML=v96.map(x=>`<option>${x}</option>`).join('');
+});
+
+</script>
+</body></html>

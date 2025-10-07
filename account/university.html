@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>حساب الجامعة — حصيف</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/style.css?v=3011"></head><body>
+<header class="header"><div class="container wrap">
+  <div class="brand"><img src="../assets/img/hasseef.png"><div><div style="font-weight:900">منصة حصيف</div><div class="subline">حساب الجامعة</div></div></div>
+  <a class="btn" href="../index.html">الرئيسية</a>
+</div></header>
+<main class="container" style="padding:18px 0">
+<section class="card">
+<div class="tabs" id="tabs"></div>
+
+<div id="u-1" class="tabpanel active">
+  <div class="section-title">بوابة الاستشارات</div>
+  <form class="grid2">
+    <div><label>مجال الاستشارة</label><select><option>ابتكار</option><option>استدامة</option><option>إدارة مشاريع</option></select></div>
+    <div><label>نوع الجهة الطالبة</label><select><option>خاص</option><option>غير ربحي</option><option>حكومي</option></select></div>
+    <div style="grid-column:1/-1"><label>الوصف</label><textarea rows="4" placeholder="وصّف الحاجة الاستشارية"></textarea></div>
+    <div><button class="btn btn-primary" type="button">نشر الطلب</button></div>
+  </form>
+</div>
+<div id="u-2" class="tabpanel">
+  <div class="section-title">إدارة المدربين/المتحدثين</div>
+  <table class="table"><thead><tr><th>الاسم</th><th>الاختصاص</th><th>الحجوزات</th><th>إدارة</th></tr></thead><tbody id="trainers"></tbody></table>
+</div>
+<div id="u-3" class="tabpanel">
+  <div class="section-title">إدارة المرافق</div>
+  <table class="table"><thead><tr><th>المرفق</th><th>السعة</th><th>الحجوزات</th><th>إدارة</th></tr></thead><tbody id="fac"></tbody></table>
+</div>
+<div id="u-4" class="tabpanel">
+  <div class="section-title">التدريب التعاوني</div>
+  <table class="table"><thead><tr><th>المنشأة</th><th>المجال</th><th>المقاعد</th><th>تقديم</th></tr></thead><tbody id="coop"></tbody></table>
+</div>
+
+</section>
+</main><footer class="footer">© Hasseef</footer>
+<script>
+
+const UTABS=['استشارات','مدربون/متحدثون','مرافق','تدريب تعاوني']; const ct=document.getElementById('tabs');
+UTABS.forEach((t,i)=>{const b=document.createElement('button'); b.className='tab'+(i==0?' active':''); b.textContent=t; b.onclick=()=>switchTab(i); ct.appendChild(b)});
+function switchTab(i){document.querySelectorAll('.tab').forEach((x,j)=>x.classList.toggle('active',i==j)); document.querySelectorAll('.tabpanel').forEach((x,j)=>x.classList.toggle('active',i==j));}
+document.getElementById('trainers').innerHTML=[['د. أحمد','ابتكار',5],['أ. مريم','استدامة',2]].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td><a class='btn'>عرض الطلبات</a></td></tr>`).join('');
+document.getElementById('fac').innerHTML=[['مسرح الجامعة',800,12],['قاعة تدريب',120,7]].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td><a class='btn' href='../modules/facility-market.html'>إدارة</a></td></tr>`).join('');
+document.getElementById('coop').innerHTML=[['شركة تقنية','برمجيات',10],['جمعية خيرية','حوكمة',6]].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td><a class='btn'>ترشيح طلاب</a></td></tr>`).join('');
+
+</script>
+</body></html>
